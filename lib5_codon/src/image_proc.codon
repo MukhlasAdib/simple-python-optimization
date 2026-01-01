@@ -1,0 +1,12 @@
+import numpy as np
+import numpy.pybridge
+
+
+def compute_watermark(
+    photo_pixels: np.ndarray[np.uint8, 3],
+    logo_pixels: np.ndarray[np.uint8, 3],
+    alpha: float,
+) -> np.ndarray:
+    result = photo_pixels * (1 - alpha) + logo_pixels * alpha
+    result = 0.299 * result[:, :, 0] + 0.587 * result[:, :, 1] + 0.114 * result[:, :, 2]
+    return result
