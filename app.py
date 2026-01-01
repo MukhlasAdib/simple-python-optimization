@@ -7,12 +7,14 @@ from lib3_opencv import watermark_opencv
 from lib4_numba import watermark_numba
 from lib5_codon import watermark_codon
 from lib6_codon_jit import watermark_codon_jit
+from lib7_numpy_v2 import watermark_numpy_v2
+from lib8_codon_v2 import watermark_codon_v2
 
 PHOTO_PATH = "images/photo.jpg"
 LOGO_PATH = "images/duck_logo.png"
 IMAGE_SIZE = (1280, 720)
 
-watermarking = watermark_codon.watermarking
+watermarking = watermark_codon_v2.watermarking
 
 
 def main():
