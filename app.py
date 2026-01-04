@@ -5,15 +5,13 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from pyinstrument import Profiler
 
-import lib1_pure_python
-import lib1_pure_python.polygon_inside
+from libs import LIBS
 
 POLYGON_DIR = Path("polygons")
+OUTPUT_DIR = Path("outputs")
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
 POINT_NUMBERS = 300
-
-LIBS = {"lib1": lib1_pure_python.polygon_inside.check_points_in_polygons}
 
 
 def load_polygon(txt_path):
@@ -38,8 +36,7 @@ def load_all_polygons():
 
 
 def visualize(polygons, points, results):
-    output_dir = Path("outputs")
-    output_dir.mkdir(exist_ok=True)
+    OUTPUT_DIR.mkdir(exist_ok=True)
     for i, (polygon, result) in enumerate(zip(polygons, results)):
         fig, ax = plt.subplots(figsize=(15, 15))
         x, y = zip(*points)
@@ -50,7 +47,7 @@ def visualize(polygons, points, results):
         ax.set_aspect("equal")
         ax.set_xlim(0, CANVAS_WIDTH)
         ax.set_ylim(0, CANVAS_HEIGHT)
-        plt.savefig(output_dir / f"output_{i}.png")
+        plt.savefig(OUTPUT_DIR / f"output_{i}.png")
         plt.close(fig)
 
 
