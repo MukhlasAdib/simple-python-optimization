@@ -69,6 +69,9 @@ def main():
         for j in range(1, POINT_NUMBERS)
     ]
 
+    # Warmup
+    LIBS[args.lib](points, polygons)
+
     profiler = Profiler()
     profiler.start()
     results = LIBS[args.lib](points, polygons)
