@@ -1,11 +1,11 @@
 import numpy as np
-from numba import njit
-
-from libs.types import PointType, PolygonType, ResultType
+import numpy.pybridge
 
 
-@njit
-def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray:
+def are_points_inside_polygon(
+    polygon: np.ndarray[float, 2],
+    points: np.ndarray[float, 2],
+) -> np.ndarray[bool, 1]:
     x, y = points[:, 0][:, None], points[:, 1][:, None]
     x1, y1 = polygon[:, 0], polygon[:, 1]
     x2, y2 = np.roll(x1, -1), np.roll(y1, -1)
@@ -15,12 +15,16 @@ def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray
     wn = np.sum(upward & (cross > 0), axis=1) - np.sum(downward & (cross < 0), axis=1)
     return wn != 0
 
-
-def check_points_in_polygons(
-    points: list[PointType], polygons: list[PolygonType]
-) -> list[ResultType]:
+def calc_insides(
+    polygons: list[list[tuple[float, float]]],
+    points: list[tuple[float, float]],
+) -> list[list[bool]]:
     points_arr = np.array(points)
-    polygons_arr = [np.array(polygon) for polygon in polygons]
     return [
-        are_points_in_polygon(polygon, points_arr).tolist() for polygon in polygons_arr
+        are_points_inside_polygon(
+            np.array(polygon), 
+            points_arr
+        ).tolist() 
+        for polygon in polygons
     ]
+
