@@ -15,6 +15,9 @@ from .lib4_numba.polygon_inside import (
 from .lib5_codon_numpy.polygon_inside import (
     check_points_in_polygons as lib5_check_points_in_polygons,
 )
+from .lib6_codon_python.polygon_inside import (
+    check_points_in_polygons as lib6_check_points_in_polygons,
+)
 from .types import PointType, PolygonType, ResultType
 
 # The expected function signature is:
@@ -34,4 +37,5 @@ LIBS: dict[
     "lib3": lib3_check_points_in_polygons,
     "lib4": lib4_check_points_in_polygons,
     "lib5": lib5_check_points_in_polygons,
+    "lib6": lib6_check_points_in_polygons,
 }
