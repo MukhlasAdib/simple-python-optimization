@@ -1,0 +1,33 @@
+def is_point_at_edge_left(
+    vertex1: tuple[float, float], vertex2: tuple[float, float], point: tuple[float, float]
+) -> bool:
+    return (vertex2[0] - vertex1[0]) * (point[1] - vertex1[1]) - (
+        vertex2[1] - vertex1[1]
+    ) * (point[0] - vertex1[0]) > 0
+
+
+def is_point_in_polygon(point: tuple[float, float], polygon: list[tuple[float, float]]) -> bool:
+    wn = 0
+    for i in range(len(polygon)):
+        vertex1 = polygon[i]
+        vertex2 = polygon[(i + 1) % len(polygon)]
+        is_point_at_left = is_point_at_edge_left(vertex1, vertex2, point)
+        is_crossing_up = vertex1[1] <= point[1] and vertex2[1] > point[1]
+        is_crossing_down = vertex1[1] > point[1] and vertex2[1] <= point[1]
+        wn += int(is_crossing_up and is_point_at_left)
+        wn -= int(is_crossing_down and not is_point_at_left)
+    return wn != 0
+
+
+def calc_insides(
+    points: list[tuple[float, float]], polygons: list[list[tuple[float, float]]]
+) -> list[list[bool]]:
+    results = [[] for _ in range(len(polygons))]
+    @par
+    for poly_idx, polygon in enumerate(polygons):
+        polygon_result = [False for _ in range(len(points))]
+        for pt_idx, point in enumerate(points):
+            is_inside = is_point_in_polygon(point, polygon)
+            polygon_result[pt_idx] = is_inside
+        results[poly_idx] = polygon_result
+    return results
