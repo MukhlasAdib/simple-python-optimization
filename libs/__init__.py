@@ -18,9 +18,6 @@ from .lib5_codon_numpy.polygon_inside import (
 from .lib6_codon_python.polygon_inside import (
     check_points_in_polygons as lib6_check_points_in_polygons,
 )
-from .lib7_codon_par.polygon_inside import (
-    check_points_in_polygons as lib7_check_points_in_polygons,
-)
 from .types import PointType, PolygonType, ResultType
 
 # The expected function signature is:
@@ -41,5 +38,4 @@ LIBS: dict[
     "lib4": lib4_check_points_in_polygons,
     "lib5": lib5_check_points_in_polygons,
     "lib6": lib6_check_points_in_polygons,
-    "lib7": lib7_check_points_in_polygons,
 }
