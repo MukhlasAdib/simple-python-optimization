@@ -1,12 +1,16 @@
+import numpy as np
+import numpy.pybridge
+
+
 def is_point_at_edge_left(
-    vertex1: tuple[float, float], vertex2: tuple[float, float], point: tuple[float, float]
+    vertex1: np.ndarray[float, 1], vertex2: np.ndarray[float, 1], point: np.ndarray[float, 1]
 ) -> bool:
     return (vertex2[0] - vertex1[0]) * (point[1] - vertex1[1]) - (
         vertex2[1] - vertex1[1]
     ) * (point[0] - vertex1[0]) > 0
 
 
-def is_point_in_polygon(point: tuple[float, float], polygon: list[tuple[float, float]]) -> bool:
+def is_point_in_polygon(point: np.ndarray[float, 1], polygon: np.ndarray[float, 2]) -> bool:
     wn = 0
     for i in range(len(polygon)):
         vertex1 = polygon[i]
@@ -23,10 +27,17 @@ def is_point_in_polygon(point: tuple[float, float], polygon: list[tuple[float, f
     return wn != 0
 
 
+def are_points_in_polygon(polygon: np.ndarray[float, 2], points: np.ndarray[float, 2]) -> np.ndarray[bool, 1]:
+    result = np.ones(points.shape[0], dtype=bool)
+    for i in range(points.shape[0]):
+        result[i] = is_point_in_polygon(points[i], polygon)
+    return result
+
+
 def calc_insides(
-    points: list[tuple[float, float]], polygons: list[list[tuple[float, float]]]
-) -> list[list[bool]]:
+    points: np.ndarray[float, 2], polygons: list[np.ndarray[float, 2]]
+) -> list[np.ndarray[bool, 1]]:
     return [
-        [is_point_in_polygon(point, polygon) for point in points]
+        are_points_in_polygon(polygon, points)
         for polygon in polygons
     ]
