@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import Polygon
 from pyinstrument import Profiler
 
@@ -15,13 +16,9 @@ POINT_NUMBERS = 300
 
 
 def load_polygon(txt_path):
-    points = []
-    with open(txt_path, "r") as f:
-        for line in f:
-            x_str, y_str = line.strip().split()
-            x = float(x_str) * CANVAS_WIDTH
-            y = float(y_str) * CANVAS_HEIGHT
-            points.append((x, y))
+    points = np.loadtxt(txt_path)
+    points[:, 0] = points[:, 0] * CANVAS_WIDTH
+    points[:, 1] = points[:, 1] * CANVAS_HEIGHT
     return points
 
 
@@ -63,11 +60,13 @@ def main():
     args = argparser.parse_args()
 
     polygons = load_all_polygons()
-    points = [
-        (i * CANVAS_WIDTH / POINT_NUMBERS, j * CANVAS_HEIGHT / POINT_NUMBERS)
-        for i in range(1, POINT_NUMBERS)
-        for j in range(1, POINT_NUMBERS)
-    ]
+    points = np.array(
+        [
+            (i * CANVAS_WIDTH / POINT_NUMBERS, j * CANVAS_HEIGHT / POINT_NUMBERS)
+            for i in range(1, POINT_NUMBERS)
+            for j in range(1, POINT_NUMBERS)
+        ]
+    )
 
     # Warmup
     LIBS[args.lib](points, polygons)

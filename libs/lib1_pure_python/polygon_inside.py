@@ -1,15 +1,15 @@
-from libs.types import PointType, PolygonType, ResultType
+import numpy as np
 
 
 def is_point_at_edge_left(
-    vertex1: PointType, vertex2: PointType, point: PointType
+    vertex1: np.ndarray, vertex2: np.ndarray, point: np.ndarray
 ) -> bool:
     return (vertex2[0] - vertex1[0]) * (point[1] - vertex1[1]) - (
         vertex2[1] - vertex1[1]
     ) * (point[0] - vertex1[0]) > 0
 
 
-def is_point_in_polygon(point: PointType, polygon: PolygonType) -> bool:
+def is_point_in_polygon(point: np.ndarray, polygon: np.ndarray) -> bool:
     wn = 0
     for i in range(len(polygon)):
         vertex1 = polygon[i]
@@ -27,9 +27,9 @@ def is_point_in_polygon(point: PointType, polygon: PolygonType) -> bool:
 
 
 def check_points_in_polygons(
-    points: list[PointType], polygons: list[PolygonType]
-) -> list[ResultType]:
+    points: np.ndarray, polygons: list[np.ndarray]
+) -> list[np.ndarray]:
     return [
-        [is_point_in_polygon(point, polygon) for point in points]
+        np.array([is_point_in_polygon(point, polygon) for point in points])
         for polygon in polygons
     ]

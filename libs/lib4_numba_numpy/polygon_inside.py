@@ -1,8 +1,6 @@
 import numpy as np
 from numba import njit
 
-from libs.types import PointType, PolygonType, ResultType
-
 
 @njit
 def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray:
@@ -17,10 +15,6 @@ def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray
 
 
 def check_points_in_polygons(
-    points: list[PointType], polygons: list[PolygonType]
-) -> list[ResultType]:
-    points_arr = np.array(points)
-    polygons_arr = [np.array(polygon) for polygon in polygons]
-    return [
-        are_points_in_polygon(polygon, points_arr).tolist() for polygon in polygons_arr
-    ]
+    points: np.ndarray, polygons: list[np.ndarray]
+) -> list[np.ndarray]:
+    return [are_points_in_polygon(polygon, points) for polygon in polygons]

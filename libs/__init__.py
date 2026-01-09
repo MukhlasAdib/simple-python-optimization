@@ -1,5 +1,7 @@
 from typing import Callable
 
+import numpy as np
+
 from .lib1_pure_python.polygon_inside import (
     check_points_in_polygons as lib1_check_points_in_polygons,
 )
@@ -21,7 +23,6 @@ from .lib6_codon_numpy.polygon_inside import (
 from .lib7_codon_python.polygon_inside import (
     check_points_in_polygons as lib7_check_points_in_polygons,
 )
-from .types import PointType, PolygonType, ResultType
 
 # The expected function signature is:
 # Args:
@@ -33,7 +34,7 @@ from .types import PointType, PolygonType, ResultType
 
 LIBS: dict[
     str,
-    Callable[[list[PointType], list[PolygonType]], list[ResultType]],
+    Callable[[np.ndarray, list[np.ndarray]], list[np.ndarray]],
 ] = {
     "lib1": lib1_check_points_in_polygons,
     "lib2": lib2_check_points_in_polygons,

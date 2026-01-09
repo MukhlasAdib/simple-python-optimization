@@ -1,8 +1,6 @@
 import numpy as np
 from numba import njit
 
-from libs.types import PointType, PolygonType, ResultType
-
 
 @njit
 def is_point_at_edge_left(
@@ -33,17 +31,13 @@ def is_point_in_polygon(point: np.ndarray, polygon: np.ndarray) -> bool:
 
 @njit
 def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray:
-    result = np.ones(points.shape[0])
+    result = np.zeros(points.shape[0], dtype=np.bool_)
     for i in range(points.shape[0]):
         result[i] = is_point_in_polygon(points[i], polygon)
     return result
 
 
 def check_points_in_polygons(
-    points: list[PointType], polygons: list[PolygonType]
-) -> list[ResultType]:
-    points_arr = np.array(points)
-    polygons_arr = [np.array(polygon) for polygon in polygons]
-    return [
-        are_points_in_polygon(polygon, points_arr).tolist() for polygon in polygons_arr
-    ]
+    points: np.ndarray, polygons: list[np.ndarray]
+) -> list[np.ndarray]:
+    return [are_points_in_polygon(polygon, points) for polygon in polygons]
