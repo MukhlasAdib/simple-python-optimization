@@ -1,15 +1,20 @@
+import numpy as np
+from numba import njit
+
 from libs.types import PointType, PolygonType, ResultType
 
 
+@njit
 def is_point_at_edge_left(
-    vertex1: PointType, vertex2: PointType, point: PointType
+    vertex1: np.ndarray, vertex2: np.ndarray, point: np.ndarray
 ) -> bool:
     return (vertex2[0] - vertex1[0]) * (point[1] - vertex1[1]) - (
         vertex2[1] - vertex1[1]
     ) * (point[0] - vertex1[0]) > 0
 
 
-def is_point_in_polygon(point: PointType, polygon: PolygonType) -> bool:
+@njit
+def is_point_in_polygon(point: np.ndarray, polygon: np.ndarray) -> bool:
     wn = 0
     for i in range(len(polygon)):
         vertex1 = polygon[i]
@@ -26,10 +31,19 @@ def is_point_in_polygon(point: PointType, polygon: PolygonType) -> bool:
     return wn != 0
 
 
+@njit
+def are_points_in_polygon(polygon: np.ndarray, points: np.ndarray) -> np.ndarray:
+    result = np.ones(points.shape[0])
+    for i in range(points.shape[0]):
+        result[i] = is_point_in_polygon(points[i], polygon)
+    return result
+
+
 def check_points_in_polygons(
     points: list[PointType], polygons: list[PolygonType]
 ) -> list[ResultType]:
+    points_arr = np.array(points)
+    polygons_arr = [np.array(polygon) for polygon in polygons]
     return [
-        [is_point_in_polygon(point, polygon) for point in points]
-        for polygon in polygons
+        are_points_in_polygon(polygon, points_arr).tolist() for polygon in polygons_arr
     ]

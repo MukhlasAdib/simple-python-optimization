@@ -11,9 +11,11 @@ def is_point_in_polygon(point: tuple[float, float], polygon: list[tuple[float, f
     for i in range(len(polygon)):
         vertex1 = polygon[i]
         vertex2 = polygon[(i + 1) % len(polygon)]
-        is_point_at_left = is_point_at_edge_left(vertex1, vertex2, point)
         is_crossing_up = vertex1[1] <= point[1] and vertex2[1] > point[1]
         is_crossing_down = vertex1[1] > point[1] and vertex2[1] <= point[1]
+        if not is_crossing_up and not is_crossing_down:
+            continue
+        is_point_at_left = is_point_at_edge_left(vertex1, vertex2, point)
         if is_crossing_up and is_point_at_left:
             wn += 1
         elif is_crossing_down and not is_point_at_left:
