@@ -23,6 +23,9 @@ from .lib6_codon_numpy.polygon_inside import (
 from .lib7_codon_python.polygon_inside import (
     check_points_in_polygons as lib7_check_points_in_polygons,
 )
+from .lib8_rust.polygon_inside import (
+    check_points_in_polygons as lib8_check_points_in_polygons,
+)
 
 # The expected function signature is:
 # Args:
@@ -43,4 +46,5 @@ LIBS: dict[
     "lib5": lib5_check_points_in_polygons,
     "lib6": lib6_check_points_in_polygons,
     "lib7": lib7_check_points_in_polygons,
+    "lib8": lib8_check_points_in_polygons,
 }
