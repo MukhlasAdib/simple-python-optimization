@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib.patches import Polygon
 from pyinstrument import Profiler
 
-from libs import LIBS
+from libs import LIBS, VIS
 
 POLYGON_DIR = Path("polygons")
 OUTPUT_DIR = Path("outputs")
@@ -32,33 +32,11 @@ def load_all_polygons():
     return polygons
 
 
-def visualize(polygons, points, results):
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    for i, (polygon, result) in enumerate(zip(polygons, results)):
-        fig, ax = plt.subplots(figsize=(15, 15))
-        x, y = zip(*points)
-        colors = ["green" if f else "red" for f in result]
-        ax.scatter(x, y, s=1, c=colors, zorder=3)
-        poly_patch = Polygon(polygon, closed=True, edgecolor="blue", facecolor="none")
-        ax.add_patch(poly_patch)
-        ax.set_aspect("equal")
-        ax.set_xlim(0, CANVAS_WIDTH)
-        ax.set_ylim(0, CANVAS_HEIGHT)
-        plt.savefig(OUTPUT_DIR / f"output_{i}.png")
-        plt.close(fig)
+def warmup(points, polygons):
+    LIBS[args.lib](points, polygons)
 
 
 def main():
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument(
-        "lib",
-        type=str,
-        choices=LIBS.keys(),
-        default="lib1",
-        help="Library to use for point-in-polygon checking",
-    )
-    args = argparser.parse_args()
-
     polygons = load_all_polygons()
     points = np.array(
         [
@@ -67,9 +45,7 @@ def main():
             for j in range(1, POINT_NUMBERS)
         ]
     )
-
-    # Warmup
-    LIBS[args.lib](points, polygons)
+    warmup(points, polygons)
 
     profiler = Profiler()
     profiler.start()
@@ -77,8 +53,25 @@ def main():
     profiler.stop()
     print(profiler.output_text(unicode=True, color=True))
 
-    visualize(polygons, points, results)
+    VIS[args.vis](polygons, points, results, OUTPUT_DIR, CANVAS_WIDTH, CANVAS_HEIGHT)
 
 
 if __name__ == "__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        "lib",
+        type=str,
+        choices=LIBS.keys(),
+        default="lib1",
+        help="Library to use for point-in-polygon checking",
+    )
+    argparser.add_argument(
+        "vis",
+        type=str,
+        choices=VIS.keys(),
+        default="vis1",
+        help="Library to use for visualization",
+    )
+    args = argparser.parse_args()
+
     main()

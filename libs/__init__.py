@@ -26,6 +26,7 @@ from .lib7_codon_python.polygon_inside import (
 from .lib8_rust.polygon_inside import (
     check_points_in_polygons as lib8_check_points_in_polygons,
 )
+from .vis1_python.plot_polygons import visualize as vis1_visualize
 
 # The expected function signature is:
 # Args:
@@ -47,4 +48,8 @@ LIBS: dict[
     "lib6": lib6_check_points_in_polygons,
     "lib7": lib7_check_points_in_polygons,
     "lib8": lib8_check_points_in_polygons,
+}
+
+VIS = {
+    "vis1": vis1_visualize,
 }
