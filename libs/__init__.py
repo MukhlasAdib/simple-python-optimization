@@ -27,6 +27,7 @@ from .lib8_rust.polygon_inside import (
     check_points_in_polygons as lib8_check_points_in_polygons,
 )
 from .vis1_python.plot_polygons import visualize as vis1_visualize
+from .vis2_rust.plot_polygons import visualize as vis2_visualize
 
 # The expected function signature is:
 # Args:
@@ -52,4 +53,5 @@ LIBS: dict[
 
 VIS = {
     "vis1": vis1_visualize,
+    "vis2": vis2_visualize,
 }

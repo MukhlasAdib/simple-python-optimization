@@ -1,13 +1,13 @@
 [package]
-name = "calc_insides_rs"
+name = "plot_polygons_rs"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "calc_insides_rs"
+name = "plot_polygons_rs"
 crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = { version = "0.27", features = ["extension-module"] }
 numpy = "0.27"
-geo = "0.28"
+plotters = { version = "0.3", default-features = false, features = ["bitmap_backend", "bitmap_encoder"] }
