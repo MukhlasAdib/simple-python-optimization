@@ -31,7 +31,7 @@ def load_all_polygons():
 
 
 def warmup(points, polygons):
-    LIBS[args.lib](points, polygons)
+    LIBS[args.lib]()(points, polygons)
 
 
 def main():
@@ -47,11 +47,11 @@ def main():
 
     profiler = Profiler()
     profiler.start()
-    results = LIBS[args.lib](points, polygons)
+    results = LIBS[args.lib]()(points, polygons)
     profiler.stop()
     print(profiler.output_text(unicode=True, color=True))
 
-    VIS[args.vis](polygons, points, results, OUTPUT_DIR, CANVAS_WIDTH, CANVAS_HEIGHT)
+    VIS[args.vis]()(polygons, points, results, OUTPUT_DIR, CANVAS_WIDTH, CANVAS_HEIGHT)
 
 
 if __name__ == "__main__":
