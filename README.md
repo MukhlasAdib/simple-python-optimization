@@ -1,5 +1,13 @@
 # Real-Time Python: Code in Python Run in Native
 
+- [1. Tested Methods](#1-tested-methods)
+- [2. Experiment Takeaways](#2-experiment-takeaways)
+- [3. How to Reproduce](#3-how-to-reproduce)
+  - [3.1. Installation](#31-installation)
+  - [3.2. Codon Setup](#32-codon-setup)
+  - [3.3. Rust Setup](#33-rust-setup)
+  - [3.4. Running the App](#34-running-the-app)
+
 This repository demonstrate some options to speedup your python code by leveraging native libraries.
 
 The problem is, given several 2D polygons (in `polygons` directory) and thousands of points, determine whether each point is inside each of the polygons or not. The results should be visualized as a plot image.
@@ -10,7 +18,7 @@ Here is a sample of expected outputs:
 
 The image might looks like it has green/red colors. But actually the green/red ones are the points that the app checks. They are so many so that they looks like solid colors. The ones colored in green are the points detected inside the polygon, and the ones colored in red are the points detected outside the polygon. The polygon is also drawn there, so you can check whether the algorithm works correctly or not.
 
-## Tested Methods
+## 1. Tested Methods
 
 I tested several methods to implement the point-in-polygon algorithm. The implementations are contained in `libs` directory. Some approach requires writing algorithms manually. I am using winding number algorithm to determine whether a point is inside a polygon or not.
 
@@ -38,15 +46,15 @@ Additionally, I also did further improvements by optimizing the results PNG plot
 
 Here we achieved 130x improvements!
 
-## Experiment Takeaways
+## 2. Experiment Takeaways
 
 - For simplest but quite fast implementation, use domain-specific off-the-shelf libaries. For example I used shapely for this case.
 - If you want more speedups, implement the algorithms in pure Python and Numpy and compile it using Numba.
 - If the case cannot be solved by just Python native and Numpy (like plotting), create small libraries using other language. In this example, I used Rust.
 
-## How to Reproduce
+## 3. How to Reproduce
 
-### Installation
+### 3.1. Installation
 
 Run this for basic setup.
 
@@ -54,7 +62,7 @@ Run this for basic setup.
 pip install -r requirements.txt 
 ```
 
-### Codon Setup
+### 3.2. Codon Setup
 
 If you want to try codon, first you have to install it (follow the [instruction here](https://docs.exaloop.io/start/install/)). Be aware that you cannot install Codon in Windows, so you might need WSL. 
 
@@ -74,7 +82,7 @@ python3 setup.py build_ext --inplace
 
 Now you are ready to use the Codon implementation.
 
-### Rust Setup
+### 3.3. Rust Setup
 
 First, make sure Rust is installed in your system. You can follow their official instruction (like [this](https://rust-lang.org/tools/install/)).
 
@@ -94,7 +102,7 @@ maturin develop --release
 
 You are ready to use Rust implementation now.
 
-### Running the App
+### 3.4. Running the App
 
 You can run the demo by simply running `app.py`. For example
 
