@@ -1,6 +1,13 @@
+"""
+Run this script to create new Polygons files.
+
+>>> python drawer.py
+
+Results will be stored in `polygons` directory.
+"""
+
 import os
 import tkinter as tk
-from tkinter import filedialog
 
 CANVAS_WIDTH = 600
 CANVAS_HEIGHT = 600
